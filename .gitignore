@@ -267,3 +267,12 @@ $RECYCLE.BIN/
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 
+
+# ==========================================================================
+# MATERIALE DEL DOCENTE: non deve MAI finire su GitHub
+# (copioni, soluzioni, esame, script di rilascio). Vale per ogni cartella
+# chiamata "docente", a qualsiasi livello.
+# ==========================================================================
+docente/
+myenv/
+*.tmp.html

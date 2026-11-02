@@ -1,0 +1,14 @@
+venv/
+.venv/
+myenv/
+env/
+__pycache__/
+.pytest_cache/
+.env
+*.pyc
+.coverage
+htmlcov/
+report*.html
+test-results/
+playwright-report/
+errore.html
