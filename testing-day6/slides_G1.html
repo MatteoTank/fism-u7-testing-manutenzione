@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G1 · API REST</title>
+<style>
+  :root {
+    --bg: #fbfbf8; --fg: #16161a; --muted: #6b6b76; --line: #dcdcd6; --code: #f1f1ec;
+    --acc: #15803d; --ko: #b91c1c; --warn: #a16207;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg);
+    font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+  .slide { display: none; height: 100vh; padding: 8vh 9vw; flex-direction: column; justify-content: center; }
+  .slide.attiva { display: flex; }
+  .etichetta { color: var(--muted); font-size: clamp(.8rem, 1.4vw, 1.05rem); margin: 0 0 1.2em; letter-spacing: .02em; }
+  .etichetta::before { content: "// "; }
+  h1 { font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 700; margin: 0 0 .5em; line-height: 1.15; letter-spacing: -.02em; }
+  h2 { font-size: clamp(1.4rem, 3.2vw, 2.4rem); font-weight: 700; margin: 0 0 .9em; letter-spacing: -.01em; }
+  h2::before { content: "$ "; color: var(--acc); }
+  p, li, td, th { font-size: clamp(1rem, 1.9vw, 1.45rem); line-height: 1.55; }
+  p { margin: .4em 0; max-width: 60ch; }
+  .sotto { color: var(--muted); }
+  ul { list-style: none; padding: 0; margin: .3em 0; }
+  li { margin: .45em 0; padding-left: 1.6em; position: relative; }
+  li::before { content: "-"; position: absolute; left: .3em; color: var(--muted); }
+  pre, code { font-family: inherit; }
+  code { background: var(--code); padding: .05em .35em; border-radius: 3px; }
+  pre { background: var(--code); border: 1px solid var(--line); border-radius: 4px; padding: 1em 1.2em; margin: .6em 0;
+    font-size: clamp(.8rem, 1.5vw, 1.15rem); line-height: 1.55; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  .c { color: var(--muted); }
+  table { border-collapse: collapse; width: 100%; max-width: 1150px; }
+  th, td { text-align: left; padding: .4em .9em .4em 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 400; }
+  .ok { color: var(--acc); } .ko { color: var(--ko); } .warn { color: var(--warn); } .acc { color: var(--acc); }
+  .regola { border-left: 4px solid var(--fg); padding: .3em 0 .3em 1em; margin-top: 1.2em; font-weight: 700;
+    font-size: clamp(1.05rem, 2.2vw, 1.7rem); max-width: 1100px; }
+  .regola.ko { border-color: var(--ko); }
+  .nav { position: fixed; bottom: 16px; right: 24px; color: var(--muted); font-size: .85rem; }
+  .barra { position: fixed; top: 0; left: 0; height: 3px; background: var(--fg); transition: width .2s; }
+</style>
+</head>
+<body>
+<div class="barra" id="barra"></div>
+
+<!-- 1 -->
+<section class="slide">
+  <p class="etichetta">uf7 · testing e manutenzione · semestre 2</p>
+  <h1>Parte seconda.</h1>
+  <p class="sotto">5 giornate, un solo progetto, molto terminale.</p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <p class="etichetta">semestre 1</p>
+  <h2>cat semestre_1.log</h2>
+<pre><span class="ok">[ok]</span> g1  caccia ai bug: correggere il codice leggendo i test rossi
+<span class="ok">[ok]</span> g2  terminale, venv, eccezioni, primo pytest
+<span class="ok">[ok]</span> g3  AAA, parametrize, coverage, mock
+<span class="ok">[ok]</span> g4  git, branch, merge, git flow
+<span class="ok">[ok]</span> g5  github actions, subprocess, exit code
+<span class="ok">[ok]</span> esame superato, da tutti</pre>
+  <p>Sapete testare una funzione isolata. Adesso passiamo a un sistema intero.</p>
+  <p class="sotto">Ripasso completo: RECAP_SEMESTRE_1.md</p>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <p class="etichetta">semestre 2</p>
+  <h2>cat programma.txt</h2>
+  <table>
+    <tr><td>03/11</td><td><b>API REST</b></td><td class="sotto">testare un server dall'esterno, come farebbe un altro programma</td></tr>
+    <tr><td>06/11</td><td><b>Browser</b></td><td class="sotto">Playwright usa il sito al posto vostro; verifiche di accessibilità</td></tr>
+    <tr><td>10/11</td><td><b>Codice legacy</b></td><td class="sotto">mettere sotto test codice che nessuno ha documentato, poi sistemarlo</td></tr>
+    <tr><td>11/11</td><td><b>Report e deploy</b></td><td class="sotto">spiegare i risultati a chi decide; rilasciare in automatico</td></tr>
+    <tr><td>25/11</td><td><b>Esame + chaos</b></td><td class="sotto">la mattina l'esame; il pomeriggio rompiamo il sistema di proposito</td></tr>
+  </table>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <p class="etichetta">obiettivo</p>
+  <h2>cosa sapete fare il 25/11</h2>
+  <ul>
+    <li>trovare bug in un'API che dal sito non si vedono</li>
+    <li>scrivere test che usano il browser da soli</li>
+    <li>modificare codice vecchio senza test, senza romperlo</li>
+    <li>rilasciare in produzione solo quando i test sono verdi</li>
+    <li>capire come si comporta un sistema quando un pezzo si guasta</li>
+  </ul>
+  <p class="sotto">Non è teoria: sono cose che in azienda si fanno ogni settimana.</p>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <p class="etichetta">il progetto</p>
+  <h2>La Bottega</h2>
+  <p>Un e-commerce piccolo: catalogo, login, carrello, checkout, e un corriere esterno che calcola le spedizioni.</p>
+  <p>Lo useremo tutti i giorni fino al 25.</p>
+  <p class="sotto">Facciamo finta che vi abbiano appena assunti e che il team precedente se ne sia andato. Il codice "funziona", dicono.</p>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <p class="etichetta">oggi</p>
+  <h2>la domanda</h2>
+  <h1>Funziona davvero?</h1>
+  <p class="sotto">Ha dei bug. Alcuni li ho messi io. Altri, probabilmente, li troverete voi.</p>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <p class="etichetta">concetto</p>
+  <h2>HTTP ≈ quello che sapete già</h2>
+  <table>
+    <tr><th>semestre 1 · CLI</th><th>oggi · API</th></tr>
+    <tr><td><code>subprocess.run([...])</code></td><td><code>requests.post(url, json=...)</code></td></tr>
+    <tr><td>argomenti</td><td>URL + body</td></tr>
+    <tr><td>exit code <span class="ok">0</span> / <span class="ko">1</span> / <span class="ko">2</span></td><td>status code <span class="ok">200</span> / <span class="ko">400</span> / <span class="ko">500</span></td></tr>
+    <tr><td>stdout</td><td><code>risposta.json()</code></td></tr>
+    <tr><td>stderr</td><td><code>{"errore": "..."}</code></td></tr>
+  </table>
+  <p class="sotto">Cambiano i nomi, non l'idea: input dentro, verifico cosa esce.</p>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <p class="etichetta">concetto</p>
+  <h2>status code: di chi è il problema</h2>
+  <table>
+    <tr><td class="ok"><b>2xx</b></td><td>è andato bene</td><td class="sotto">200 · 201</td></tr>
+    <tr><td class="warn"><b>4xx</b></td><td>ha sbagliato il client</td><td class="sotto">400 · 401 · 403 · 404 · 409</td></tr>
+    <tr><td class="ko"><b>5xx</b></td><td>ha sbagliato il server</td><td class="sotto">500 · 503</td></tr>
+  </table>
+  <div class="regola ko">Se un input sbagliato produce un 500, è un bug del server.</div>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <p class="etichetta">architettura</p>
+  <h2>com'è fatto</h2>
+<pre>  pytest/browser  ──http──▶  bottega   :8000  ──http──▶  corriere  :8001
+                             app.py                      corriere.py
+                             <span class="c">(nostro)</span>                    <span class="c">(non nostro, non si tocca)</span></pre>
+  <p>Il riferimento è <code>bottega/README.md</code>: il contratto delle API.</p>
+  <div class="regola">Se il codice e il contratto dicono cose diverse, ha ragione il contratto.</div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <p class="etichetta">lab 1</p>
+  <h2>il contratto pubblico</h2>
+<pre>def test_health():
+    <span class="c"># Act</span>
+    risposta = requests.get(f"{BASE_URL}/api/health", timeout=5)
+
+    <span class="c"># Assert</span>
+    assert risposta.status_code == 200
+    assert risposta.json()["status"] == "ok"</pre>
+  <ul>
+    <li>ogni chiamata di rete ha un <code>timeout</code></li>
+    <li>lo schema JSON si valida con <code>jsonschema</code></li>
+    <li>per mandare JSON rotto apposta: <code>data=</code>, non <code>json=</code></li>
+  </ul>
+  <p class="sotto">testing-day6/lab1_contratto/README.md</p>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+  <p class="etichetta">concetto</p>
+  <h2>fixture</h2>
+<pre><span class="c"># tests/conftest.py</span>
+@pytest.fixture
+def token(base_url):
+    r = requests.post(f"{base_url}/api/login", json={...}, timeout=5)
+    return r.json()["token"]
+
+@pytest.fixture
+def auth(token):                         <span class="c"># una fixture può usarne un'altra</span>
+    return {"Authorization": f"Bearer {token}"}
+
+<span class="c"># tests/test_carrello.py</span>
+def test_carrello(base_url, auth):       <span class="c"># pytest le passa in base al nome</span>
+    r = requests.get(f"{base_url}/api/carrello", headers=auth, timeout=5)</pre>
+  <p class="sotto">In pratica: l'Arrange scritto una volta sola, invece che in ogni test.</p>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+  <p class="etichetta">lab 2</p>
+  <h2>token, fixture, stato</h2>
+  <ul>
+    <li>il <code>POST</code> risponde 201: verificate comunque con un <code>GET</code></li>
+    <li>il server si ricorda le cose tra un test e l'altro: <code>autouse=True</code> + <code>/api/reset</code></li>
+    <li>i casi d'errore del carrello in un solo test parametrizzato</li>
+    <li>un login sbagliato non deve dire se l'utente esiste</li>
+  </ul>
+  <p class="sotto">testing-day6/lab2_autenticazione/README.md</p>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+  <p class="etichetta">fine giornata</p>
+  <h2>git log --oneline oggi</h2>
+<pre>a1f3c09 lo status code fa il lavoro dell'exit code
+7b2e44d le fixture evitano di ripetere l'Arrange
+3c9d0e1 un 500 per un input sbagliato è sempre un bug</pre>
+  <p><b>Compito:</b> bug report e correzioni dei Lab 1 e 2, <code>python -m playwright install chromium</code></p>
+  <p class="sotto">Venerdì: prima il Lab 3 (il corriere esterno), poi i test che usano il browser.</p>
+</section>
+
+<div class="nav" id="nav"></div>
+<script>
+  const slide = [...document.querySelectorAll(".slide")];
+  let i = Math.max(0, Math.min(slide.length - 1, parseInt(location.hash.slice(1) || "1", 10) - 1));
+  const dueCifre = (n) => String(n).padStart(2, "0");
+  function mostra() {
+    slide.forEach((s, k) => s.classList.toggle("attiva", k === i));
+    document.getElementById("nav").textContent = `uf7/g1 · ${dueCifre(i + 1)}/${dueCifre(slide.length)}`;
+    document.getElementById("barra").style.width = `${((i + 1) / slide.length) * 100}%`;
+    history.replaceState(null, "", `#${i + 1}`);
+  }
+  document.addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) { i = Math.min(i + 1, slide.length - 1); mostra(); }
+    if (["ArrowLeft", "PageUp"].includes(e.key)) { i = Math.max(i - 1, 0); mostra(); }
+    if (e.key === "f" || e.key === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+  });
+  document.addEventListener("click", (e) => { if (e.clientX > innerWidth / 2) { i = Math.min(i + 1, slide.length - 1); } else { i = Math.max(i - 1, 0); } mostra(); });
+  mostra();
+</script>
+</body>
+</html>
