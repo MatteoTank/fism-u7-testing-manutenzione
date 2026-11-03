@@ -134,17 +134,6 @@
 - **In una frase:** dimostrare **chi sei**. Con il login il server vi dà un **token**: una stringa casuale da allegare a ogni richiesta successiva, nell'header `Authorization: Bearer <token>`.
 - **Come al ristorante:** il braccialetto del villaggio turistico. Lo mostri una volta all'ingresso, poi ogni bar ti serve senza chiederti i documenti.
 
-### Servizio esterno (dipendenza)
-- **In una frase:** un programma di **un'altra azienda** da cui il nostro dipende. Non possiamo modificarlo, possiamo solo chiamarlo. Per noi è il corriere SpediVeloce.
-- **Come al ristorante:** il fornitore del pesce. Se non consegna, la cucina deve sapere cosa fare.
-
-### Timeout
-- **In una frase:** il **tempo massimo** che siamo disposti ad aspettare una risposta. Scaduto quello, si rinuncia e si gestisce l'errore.
-- **Come al ristorante:** "se il fornitore non arriva entro le 11, togliamo il pesce dal menù di oggi". Senza questa regola, la cucina resta ferma tutto il giorno.
-
-### Sistema distribuito
-- **In una frase:** un sistema fatto di **più processi** che collaborano **attraverso la rete**. La Bottega + il corriere sono già un sistema distribuito, in piccolo.
-
 ---
 
 ## Parte 2 — Python e test (ripasso del semestre 1, usato ogni giorno)
