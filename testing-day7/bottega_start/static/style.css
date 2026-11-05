@@ -1,0 +1,152 @@
+/* ==========================================================================
+   La Bottega — foglio di stile
+   ========================================================================== */
+
+/* --- Design token ---------------------------------------------------------
+   I colori "di brand" sono raccolti qui: cambiarli qui li cambia ovunque. */
+:root {
+  --indaco: #4f46e5;
+  --indaco-scuro: #3730a3;
+  --notte: #0f172a;
+  --ardesia: #1e293b;
+  --testo: #0f172a;
+  --testo-secondario: #475569;
+  --sfondo: #f5f7fb;
+  --superficie: #ffffff;
+  --bordo: #e2e8f0;
+  --raggio: 16px;
+  --ombra: 0 1px 2px rgba(15, 23, 42, .06), 0 8px 24px rgba(15, 23, 42, .06);
+  --ombra-alta: 0 2px 4px rgba(15, 23, 42, .08), 0 18px 40px rgba(79, 70, 229, .18);
+
+  /* scelte "eleganti" del grafico: testi chiari e delicati */
+  --colore-prezzo: #a5b4fc;
+  --btn-testo: #818cf8;
+  --btn-sfondo: #eef2ff;
+  --primario-testo: #ffffff;
+  --primario-sfondo: #fbbf24;
+  --testo-tenue: #b6bcc6;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }   /* l'attributo hidden deve vincere su qualsiasi display */
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--sfondo);
+  color: var(--testo);
+  -webkit-font-smoothing: antialiased;
+}
+
+.contenitore { width: min(1180px, 100% - 32px); margin-inline: auto; }
+
+/* --- Barra in alto ------------------------------------------------------ */
+header {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(15, 23, 42, .92);
+  backdrop-filter: saturate(160%) blur(12px);
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+.barra { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; flex-wrap: wrap; }
+.logo { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 1.3rem; font-weight: 800; letter-spacing: -.02em; }
+.logo::before {
+  content: "B"; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px;
+  background: linear-gradient(135deg, #818cf8, #4f46e5 60%, #7c3aed);
+  font-size: 1.05rem; box-shadow: 0 4px 14px rgba(99, 102, 241, .45);
+}
+#form-login { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+header input {
+  width: 150px; padding: 9px 12px; border-radius: 10px; font: inherit; font-size: .92rem;
+  color: #fff; background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .16);
+  transition: border-color .15s, background .15s;
+}
+header input::placeholder { color: #94a3b8; }
+header input:focus { outline: none; border-color: #818cf8; background: rgba(255, 255, 255, .12); }
+header label { color: #cbd5e1; font-size: .82rem; }
+header button {
+  padding: 9px 18px; border: 0; border-radius: 10px; font: inherit; font-weight: 600; cursor: pointer;
+  color: #fff; background: var(--indaco); transition: background .15s, transform .15s;
+}
+header button:hover { background: #4338ca; transform: translateY(-1px); }
+#benvenuto { margin: 0; font-weight: 600; padding: 8px 14px; border-radius: 999px; background: rgba(255, 255, 255, .1); }
+
+/* --- Hero --------------------------------------------------------------- */
+.hero {
+  color: #fff; padding: 56px 0 64px;
+  background:
+    radial-gradient(900px 300px at 85% -10%, rgba(244, 114, 182, .45), transparent 60%),
+    radial-gradient(700px 300px at 0% 120%, rgba(56, 189, 248, .35), transparent 60%),
+    linear-gradient(135deg, #312e81, #4f46e5 55%, #6d28d9);
+}
+.hero-etichetta {
+  display: inline-block; margin: 0 0 14px; padding: 6px 12px; border-radius: 999px;
+  font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .25);
+}
+.hero-titolo { margin: 0; font-size: clamp(2rem, 5vw, 3.4rem); font-weight: 800; line-height: 1.05; letter-spacing: -.03em; max-width: 14ch; }
+.hero-titolo span { color: #fde68a; }
+.hero-testo { margin: 16px 0 24px; font-size: 1.1rem; max-width: 46ch; color: #e0e7ff; }
+.vantaggi { display: flex; flex-wrap: wrap; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.vantaggi li { padding: 8px 14px; border-radius: 999px; font-size: .9rem; font-weight: 600; background: rgba(15, 23, 42, .28); }
+
+/* --- Layout ------------------------------------------------------------- */
+.griglia { display: grid; grid-template-columns: 1fr 340px; gap: 28px; margin-top: -28px; padding-bottom: 48px; }
+@media (max-width: 860px) { .griglia { grid-template-columns: 1fr; } }
+main h2 { margin: 0 0 16px; font-size: 1.25rem; letter-spacing: -.01em; }
+.griglia > section:not(#pannello-carrello) > h2 {
+  display: inline-block; padding: 8px 16px; border-radius: 12px;
+  background: var(--superficie); box-shadow: var(--ombra);
+}
+
+/* --- Catalogo ----------------------------------------------------------- */
+#catalogo { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+.scheda {
+  display: flex; flex-direction: column; padding: 14px; border-radius: var(--raggio);
+  background: var(--superficie); border: 1px solid var(--bordo); box-shadow: var(--ombra);
+  transition: transform .2s, box-shadow .2s;
+}
+.scheda:hover { transform: translateY(-4px); box-shadow: var(--ombra-alta); }
+.scheda img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; background: #f1f5f9; }
+.scheda h3 { margin: 14px 0 4px; font-size: 1.02rem; font-weight: 700; }
+.prezzo { margin: 0 0 14px; font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; color: var(--colore-prezzo); }
+
+.btn {
+  display: block; width: 100%; margin-top: auto; padding: 11px 16px; border: 0; border-radius: 12px;
+  font: inherit; font-weight: 700; text-align: center; cursor: pointer; user-select: none;
+  color: var(--btn-testo); background: var(--btn-sfondo);
+  transition: transform .15s, filter .15s, box-shadow .15s;
+}
+.btn:hover { filter: brightness(.96); transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+.btn-primario { margin-top: 12px; color: var(--primario-testo); background: var(--primario-sfondo); box-shadow: 0 8px 20px rgba(251, 191, 36, .35); }
+.btn:disabled { cursor: wait; opacity: .7; transform: none; }
+.btn:focus-visible, header button:focus-visible, input:focus-visible { outline: 3px solid #6366f1; outline-offset: 2px; }
+
+/* --- Carrello ----------------------------------------------------------- */
+aside, #pannello-carrello {
+  position: sticky; top: 88px; align-self: start; padding: 20px; border-radius: var(--raggio);
+  background: var(--superficie); border: 1px solid var(--bordo); box-shadow: var(--ombra);
+}
+#carrello ul { margin: 0 0 12px; padding: 0; list-style: none; }
+#carrello li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px dashed var(--bordo); font-size: .95rem; }
+#carrello li span { font-weight: 700; white-space: nowrap; }
+.totale { display: flex; justify-content: space-between; margin: 0; padding-top: 4px; font-size: 1.15rem; font-weight: 800; }
+.vuoto { margin: 4px 0; color: var(--testo-tenue); }
+
+#form-checkout { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--bordo); }
+#form-checkout label { display: block; margin-top: 10px; font-size: .85rem; font-weight: 600; color: var(--testo-secondario); }
+#form-checkout input {
+  display: block; width: 100%; margin: 6px 0; padding: 11px 12px; border-radius: 10px;
+  font: inherit; border: 1px solid var(--bordo); background: #f8fafc; transition: border-color .15s, box-shadow .15s;
+}
+#form-checkout input:focus { outline: none; border-color: var(--indaco); box-shadow: 0 0 0 4px rgba(79, 70, 229, .15); background: #fff; }
+
+/* --- Messaggi ----------------------------------------------------------- */
+#messaggio:empty { display: none; }
+.errore, .successo { margin-top: 14px; padding: 12px 14px; border-radius: 12px; font-weight: 600; font-size: .95rem; }
+.errore { color: #991b1b; background: #fef2f2; border: 1px solid #fecaca; }
+.successo { color: #166534; background: #f0fdf4; border: 1px solid #bbf7d0; }
+
+/* --- Piè di pagina ------------------------------------------------------ */
+footer { padding: 28px 0; color: #64748b; font-size: .88rem; border-top: 1px solid var(--bordo); background: var(--superficie); }

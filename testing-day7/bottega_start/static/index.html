@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>La Bottega</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <div class="contenitore barra">
+      <div class="logo">La Bottega</div>
+      <div id="area-utente">
+        <form id="form-login">
+          <input id="username" type="text" placeholder="Username">
+          <input id="password" type="password" placeholder="Password">
+          <button type="submit">Accedi</button>
+        </form>
+        <div id="benvenuto" hidden></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div class="contenitore">
+        <p class="hero-etichetta">Collezione autunno 2026</p>
+        <p class="hero-titolo">Il tuo setup, <span>senza compromessi.</span></p>
+        <p class="hero-testo">Periferiche scelte una per una dal nostro team, spedite in 24/48 ore.</p>
+        <ul class="vantaggi">
+          <li>🚚 Spedizione gratuita sopra 50 €</li>
+          <li>↩️ Reso entro 30 giorni</li>
+          <li>🔒 Pagamenti protetti</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="contenitore griglia">
+      <section>
+        <h2>Catalogo</h2>
+        <div id="catalogo"></div>
+      </section>
+
+      <aside>
+        <h2>Carrello</h2>
+        <div id="carrello"><p class="vuoto">Accedi per vedere il carrello</p></div>
+
+        <form id="form-checkout" hidden>
+          <input id="cap" type="text" placeholder="CAP">
+          <input id="codice-sconto" type="text" placeholder="Codice sconto">
+          <div class="btn btn-primario" id="conferma-ordine" onclick="confermaOrdine()">Conferma ordine</div>
+        </form>
+
+        <div id="messaggio"></div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>
+    <div class="contenitore">© 2026 La Bottega S.r.l. · Firenze</div>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
