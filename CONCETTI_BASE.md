@@ -10,6 +10,7 @@
 **Indice**
 - [Parte 1: Reti e web (Giorno 6)](#parte-1--reti-e-web-giorno-6)
 - [Parte 2: Python e test (ripasso del semestre 1, usato ogni giorno)](#parte-2--python-e-test-ripasso-del-semestre-1-usato-ogni-giorno)
+- [Parte 3: Servizi esterni e browser (Giorno 7)](#parte-3--servizi-esterni-e-browser-giorno-7)
 
 ---
 
@@ -134,17 +135,6 @@
 - **In una frase:** dimostrare **chi sei**. Con il login il server vi dà un **token**: una stringa casuale da allegare a ogni richiesta successiva, nell'header `Authorization: Bearer <token>`.
 - **Come al ristorante:** il braccialetto del villaggio turistico. Lo mostri una volta all'ingresso, poi ogni bar ti serve senza chiederti i documenti.
 
-### Servizio esterno (dipendenza)
-- **In una frase:** un programma di **un'altra azienda** da cui il nostro dipende. Non possiamo modificarlo, possiamo solo chiamarlo. Per noi è il corriere SpediVeloce.
-- **Come al ristorante:** il fornitore del pesce. Se non consegna, la cucina deve sapere cosa fare.
-
-### Timeout
-- **In una frase:** il **tempo massimo** che siamo disposti ad aspettare una risposta. Scaduto quello, si rinuncia e si gestisce l'errore.
-- **Come al ristorante:** "se il fornitore non arriva entro le 11, togliamo il pesce dal menù di oggi". Senza questa regola, la cucina resta ferma tutto il giorno.
-
-### Sistema distribuito
-- **In una frase:** un sistema fatto di **più processi** che collaborano **attraverso la rete**. La Bottega + il corriere sono già un sistema distribuito, in piccolo.
-
 ---
 
 ## Parte 2 — Python e test (ripasso del semestre 1, usato ogni giorno)
@@ -188,3 +178,45 @@ def costo_spedizione(cap: str, peso: float) -> float:   # cap e peso sono PARAME
 
 ### Black box e white box
 - **White box:** guardo **dentro** il codice (import, mock, if). **Black box:** guardo solo **da fuori** (input → output), come farebbe un utente.
+
+---
+
+## Parte 3 — Servizi esterni e browser (Giorno 7)
+
+### Servizio esterno (dipendenza)
+- **In una frase:** un programma di **un'altra azienda** da cui il nostro dipende. Non possiamo modificarlo, possiamo solo chiamarlo. Per noi è il corriere SpediVeloce.
+- **Come al ristorante:** il fornitore del pesce. Se non consegna, la cucina deve sapere cosa fare.
+
+### Timeout
+- **In una frase:** il **tempo massimo** che siamo disposti ad aspettare una risposta. Scaduto quello, si rinuncia e si gestisce l'errore.
+- **Come al ristorante:** "se il fornitore non arriva entro le 11, togliamo il pesce dal menù di oggi". Senza questa regola, la cucina resta ferma tutto il giorno.
+
+### Sistema distribuito
+- **In una frase:** un sistema fatto di **più processi** che collaborano **attraverso la rete**. La Bottega + il corriere sono già un sistema distribuito, in piccolo.
+
+
+### HTML, CSS, JavaScript
+| | Cosa fa | Analogia (casa) |
+|---|---|---|
+| **HTML** | la **struttura**: titoli, bottoni, campi | i muri e le stanze |
+| **CSS** | l'**aspetto**: colori, spazi, font | l'arredamento e la pittura |
+| **JavaScript** | il **comportamento**: cosa succede al click | l'impianto elettrico |
+
+### DOM
+- **In una frase:** la rappresentazione "ad albero" della pagina che il browser costruisce leggendo l'HTML. Playwright clicca e legge **elementi del DOM**.
+- **Provalo:** tasto destro su un elemento della pagina → **Ispeziona**.
+
+### Elemento, tag, attributo
+```html
+<button type="submit" id="conferma">Conferma ordine</button>
+ └─tag─┘ └─attributo─┘ └attributo┘ └─── testo ───┘
+```
+
+### Selettore / locator
+- **In una frase:** il modo per dire a Playwright **quale** elemento cercare. Il migliore è "come lo cercherebbe una persona": `get_by_role("button", name="Conferma ordine")`.
+
+### Headless
+- **In una frase:** un browser **senza finestra**: funziona davvero, ma non lo vedete. È così che i test girano in CI.
+
+### Accessibilità
+- **In una frase:** fare in modo che il sito sia usabile **da tutti**, anche da chi non vede, usa solo la tastiera o ha difficoltà visive. Il **lettore di schermo** è il programma che legge la pagina ad alta voce.

@@ -4,9 +4,11 @@
 
 Avete passato la giornata a dimostrare che La Bottega **non** rispetta il suo contratto. Ora siete voi i responsabili della correzione. Prima di venerdì, però, c'è una cosa da fare per la prossima lezione, ed è **obbligatoria per tutti**.
 
+> Il **Lab 3** (il corriere esterno) non l'abbiamo fatto: lo facciamo **venerdì in aula**, all'inizio della lezione. Non serve farlo a casa: questo compito riguarda solo i Lab 1 e 2.
+
 ## Livello 0: Preparazione per venerdì (OBBLIGATORIO)
 
-Venerdì faremo test sull'interfaccia grafica con un browser comandato da Python. Serve scaricare il browser: circa 150 MB da scaricare (quasi 600 MB una volta installato), troppo per la rete dell'aula se lo fate tutti insieme.
+Venerdì, dopo il Lab 3, faremo test sull'interfaccia grafica con un browser comandato da Python. Serve scaricare il browser: circa 150 MB da scaricare (quasi 600 MB una volta installato), troppo per la rete dell'aula se lo fate tutti insieme.
 
 Con il venv della Bottega attivo:
 
@@ -19,7 +21,7 @@ Verifica: `python -m playwright --version` stampa una versione. Se ricevete erro
 
 ## Livello 1: Sopravvivenza (obbligatorio per tutti)
 
-1. Completate i test dei Lab 1, 2 e 3 fino al Livello 2 compreso.
+1. Completate i test dei Lab 1 e 2 fino al Livello 2 compreso.
 2. Lanciate `pytest`. Molti test saranno **rossi**: è corretto, sono i bug della Bottega.
 3. Create il file `BUG_REPORT.md` nella radice del progetto, con una sezione per ogni bug trovato:
 
@@ -35,7 +37,7 @@ Verifica: `python -m playwright --version` stampa una versione. Se ricevete erro
 
 ## Livello 2: Ingegneria (standard)
 
-Correggete `app.py` e `spedizioni.py` finché **tutti** i test sono verdi, compreso `pytest -m chaos` con il corriere spento.
+Correggete `app.py` finché **tutti** i test dei Lab 1 e 2 sono verdi. (`spedizioni.py` non si tocca: è il Lab 3 di venerdì.)
 
 Vincoli architetturali (Quality Gate):
 - **Vietato** riempire ogni endpoint di `try/except` copiati e incollati. La lettura e la validazione del JSON vanno in **un solo** punto riutilizzabile.
@@ -48,7 +50,7 @@ Vincoli architetturali (Quality Gate):
 - in un passaggio `run:` potete avviare un processo in background con `python corriere.py &`;
 - prima di lanciare `pytest` serve aspettare che il server risponda (`sleep 3` è la versione rozza; un ciclo con `curl` è quella professionale).
 
-Obiettivo: pallino verde su GitHub con tutti i test, chaos esclusi.
+Obiettivo: pallino verde su GitHub con tutti i test dei Lab 1 e 2.
 
 ---
 
@@ -56,4 +58,4 @@ Obiettivo: pallino verde su GitHub con tutti i test, chaos esclusi.
 
 1. Create un repository **privato** su GitHub con il progetto. Controllate che `venv/` **non** sia nel repo (c'è già il `.gitignore`).
 2. Aggiungete il docente come collaboratore.
-3. Mandate il link del repository a `angeligiovanni21@gmail.com` entro le 23:59 di giovedì.
+3. Mandate il link del repository a `angeligiovanni21@gmail.com` entro le 23:59 di giovedì 5 novembre.
