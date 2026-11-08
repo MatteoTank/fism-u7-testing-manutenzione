@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>G2 · Test isolati e mock</title>
+<style>
+  :root {
+    --bg: #fbfbf8; --fg: #16161a; --muted: #6b6b76; --line: #dcdcd6; --code: #f1f1ec;
+    --acc: #15803d; --ko: #b91c1c; --warn: #a16207;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg);
+    font-family: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+  .slide { display: none; height: 100vh; padding: 8vh 9vw; flex-direction: column; justify-content: center; }
+  .slide.attiva { display: flex; }
+  .etichetta { color: var(--muted); font-size: clamp(.8rem, 1.4vw, 1.05rem); margin: 0 0 1.2em; letter-spacing: .02em; }
+  .etichetta::before { content: "// "; }
+  h1 { font-size: clamp(2rem, 5vw, 3.8rem); font-weight: 700; margin: 0 0 .5em; line-height: 1.15; letter-spacing: -.02em; }
+  h2 { font-size: clamp(1.4rem, 3.2vw, 2.4rem); font-weight: 700; margin: 0 0 .9em; letter-spacing: -.01em; }
+  h2::before { content: "$ "; color: var(--acc); }
+  p, li, td, th { font-size: clamp(1rem, 1.9vw, 1.45rem); line-height: 1.55; }
+  p { margin: .4em 0; max-width: 60ch; }
+  .sotto { color: var(--muted); }
+  ul { list-style: none; padding: 0; margin: .3em 0; }
+  li { margin: .45em 0; padding-left: 1.6em; position: relative; }
+  li::before { content: "-"; position: absolute; left: .3em; color: var(--muted); }
+  pre, code { font-family: inherit; }
+  code { background: var(--code); padding: .05em .35em; border-radius: 3px; }
+  pre { background: var(--code); border: 1px solid var(--line); border-radius: 4px; padding: 1em 1.2em; margin: .6em 0;
+    font-size: clamp(.8rem, 1.5vw, 1.15rem); line-height: 1.55; overflow-x: auto; }
+  pre code { background: none; padding: 0; }
+  .c { color: var(--muted); }
+  table { border-collapse: collapse; width: 100%; max-width: 1150px; }
+  th, td { text-align: left; padding: .4em .9em .4em 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 400; }
+  .ok { color: var(--acc); } .ko { color: var(--ko); } .warn { color: var(--warn); } .acc { color: var(--acc); }
+  .regola { border-left: 4px solid var(--fg); padding: .3em 0 .3em 1em; margin-top: 1.2em; font-weight: 700;
+    font-size: clamp(1.05rem, 2.2vw, 1.7rem); max-width: 1100px; }
+  .regola.ko { border-color: var(--ko); }
+  .nav { position: fixed; bottom: 16px; right: 24px; color: var(--muted); font-size: .85rem; }
+  .barra { position: fixed; top: 0; left: 0; height: 3px; background: var(--fg); transition: width .2s; }
+</style>
+</head>
+<body>
+<div class="barra" id="barra"></div>
+
+<!-- 1 -->
+<section class="slide">
+  <p class="etichetta">uf7 · giornata 2</p>
+  <h1>Il server ha memoria.</h1>
+  <p class="sotto">Finiamo il Lab 2, poi il primo mock su un servizio esterno.</p>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+  <p class="etichetta">ripasso</p>
+  <h2>cat dove_eravamo.txt</h2>
+<pre>client  --- richiesta HTTP --->  server     <span class="c"># pytest + requests ---> la Bottega</span>
+        <--- status + JSON ----
+
+<span class="ok">200</span> ok   <span class="ok">201</span> creato   <span class="warn">400</span> dati sbagliati   <span class="warn">401</span> chi sei?
+<span class="warn">404</span> non esiste   <span class="warn">409</span> conflitto   <span class="ko">500</span> il server è esploso</pre>
+  <p>Una <b>fixture</b> prepara qualcosa per il test. Il test la chiede scrivendone il nome tra i parametri.</p>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+  <p class="etichetta">lab 2 · livello 2</p>
+  <h2>non fidarti del 201</h2>
+<pre>requests.post(f"{base_url}/api/carrello", json={"prodotto_id": 2, "quantita": 2}, ...)
+
+carrello = requests.get(f"{base_url}/api/carrello", ...).json()   <span class="c"># un'ALTRA chiamata</span>
+assert carrello["righe"][0]["quantita"] == 2
+assert carrello["totale"] == 69.00</pre>
+  <p>Il server dice "fatto". Lo verifichiamo chiedendogli lo stato.</p>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+  <p class="etichetta">lab 2 · livello 2</p>
+  <h2>pytest</h2>
+<pre><span class="ko">E       assert 4 == 2</span></pre>
+  <p>Il test era giusto. Un test precedente aveva già messo 2 mouse nel carrello, e il server se li ricordava.</p>
+  <p class="regola ko">Un test che dipende dall'ordine è un test flaky.</p>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+  <p class="etichetta">lab 2 · livello 2</p>
+  <h2>cat tests/conftest.py</h2>
+<pre>@pytest.fixture(autouse=True)        <span class="c"># gira prima di OGNI test</span>
+def stato_pulito(base_url):
+    requests.post(f"{base_url}/api/reset", timeout=5)</pre>
+  <p>Ogni test parte da uno stato noto. <span class="ok">4 == 2</span> diventa <span class="ok">2 == 2</span>.</p>
+  <p class="sotto">Il reset cancella anche i token: nessun problema, gira prima di token e auth.</p>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+  <p class="etichetta">lab 2 · livello 2</p>
+  <h2>un test, sei casi</h2>
+<pre>@pytest.mark.parametrize("body, status_atteso", [
+    ({"prodotto_id": 2, "quantita": -3}, 400),   <span class="ko">201</span>
+    ({"prodotto_id": 2, "quantita": 0}, 400),    <span class="ko">201</span>
+    ({"prodotto_id": 2, "quantita": "2"}, 400),  <span class="ko">500</span>
+    ({"prodotto_id": 2}, 400),                   <span class="ko">500</span>
+    ({"prodotto_id": 999, "quantita": 1}, 404),  <span class="ok">404</span>
+    ({"prodotto_id": 3, "quantita": 99}, 409),   <span class="ok">409</span>
+])</pre>
+  <p>Quattro rossi, quattro bug veri. Con <code>-3</code> al checkout lo stock <b>sale</b>.</p>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+  <p class="etichetta">lab 2 · livello 2</p>
+  <h2>login fallito</h2>
+<pre>POST /api/login  {"username": "pippo", ...}  ->  <span class="ko">"utente inesistente"</span>
+POST /api/login  {"username": "mario", ...}  ->  <span class="ko">"password errata"</span></pre>
+  <p>Così un attaccante scopre quali utenti esistono. Poi gli resta solo la password.</p>
+  <p class="regola">Sempre e solo: "credenziali non valide".</p>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+  <p class="etichetta">lab 3</p>
+  <h2>cat spedizioni.py</h2>
+<pre>def costo_spedizione(cap, peso):
+    risposta = requests.get(f"{CORRIERE_URL}/tariffa", params={...})
+    return risposta.json()["costo"]</pre>
+  <p>La Bottega chiede il prezzo a SpediVeloce. Il corriere non è nostro: non lo controlliamo.</p>
+  <p class="sotto">Per testare il nostro codice non vogliamo dipendere dal loro server.</p>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+  <p class="etichetta">lab 3 · livello 1</p>
+  <h2>il primo mock</h2>
+<pre>@patch("spedizioni.requests.get")     <span class="c"># dove viene USATO</span>
+def test_costo_letto_dalla_risposta(mock_get):
+    risposta_finta = MagicMock()
+    risposta_finta.status_code = 200
+    risposta_finta.json.return_value = {"costo": 4.9}
+    mock_get.return_value = risposta_finta
+
+    assert spedizioni.costo_spedizione("50100", 1.5) == 4.9</pre>
+  <p>Nessun server acceso. Gira in millisecondi.</p>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+  <p class="etichetta">compito</p>
+  <h2>cat homework/README.md</h2>
+<pre>[ ] il primo mock, call_args
+[ ] timeout, Timeout, ConnectionError, 503   <span class="c"># prima i test, rossi</span>
+[ ] ServizioSpedizioniNonDisponibile
+[ ] checkout: 503 invece di 500
+[ ] bug report</pre>
+  <p>Entro lunedì 9/11, 23:59. Il resto è facoltativo.</p>
+</section>
+
+<div class="nav" id="nav"></div>
+<script>
+  const slide = [...document.querySelectorAll(".slide")];
+  let i = Math.max(0, Math.min(slide.length - 1, parseInt(location.hash.slice(1) || "1", 10) - 1));
+  const dueCifre = (n) => String(n).padStart(2, "0");
+  function mostra() {
+    slide.forEach((s, k) => s.classList.toggle("attiva", k === i));
+    document.getElementById("nav").textContent = `uf7/g2 · ${dueCifre(i + 1)}/${dueCifre(slide.length)}`;
+    document.getElementById("barra").style.width = `${((i + 1) / slide.length) * 100}%`;
+    history.replaceState(null, "", `#${i + 1}`);
+  }
+  document.addEventListener("keydown", (e) => {
+    if (["ArrowRight", "PageDown", " "].includes(e.key)) { i = Math.min(i + 1, slide.length - 1); mostra(); }
+    if (["ArrowLeft", "PageUp"].includes(e.key)) { i = Math.max(i - 1, 0); mostra(); }
+    if (e.key === "f" || e.key === "F") { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+  });
+  document.addEventListener("click", (e) => { if (e.clientX > innerWidth / 2) { i = Math.min(i + 1, slide.length - 1); } else { i = Math.max(i - 1, 0); } mostra(); });
+  mostra();
+</script>
+</body>
+</html>
