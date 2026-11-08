@@ -93,10 +93,8 @@ def login():
     username = dati["username"]
     password = dati["password"]
 
-    if username not in UTENTI:
-        return jsonify({"errore": "utente inesistente"}), 401
-    if UTENTI[username]["password"] != password:
-        return jsonify({"errore": "password errata"}), 401
+    if username not in UTENTI or UTENTI[username]["password"] != password:
+        return jsonify({"errore": "credenziali non valide"}), 401
 
     token = secrets.token_hex(16)
     token_attivi[token] = username

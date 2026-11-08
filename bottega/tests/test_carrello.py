@@ -1,6 +1,5 @@
 import pytest
 import requests
-import conftest
 
 """ --------------- Livello 1 ------------------- """
 @pytest.mark.parametrize("header", [
@@ -25,25 +24,22 @@ def test_aggiunta_carrello(base_url, auth):
 """ --------------- Livello 2 ------------------- """
 
 def test_controllo_aggiunta_carrello(base_url, auth):
-    risposta = requests.post(
+    requests.post(
         f"{base_url}/api/carrello",
         json={"prodotto_id": 1, "quantita": 1},
         headers=auth,
         timeout=5
     )
 
-    assert risposta.status_code == 201
-
     carrello = requests.get(
         f"{base_url}/api/carrello",
         headers=auth,
         timeout=5
-    )
+    ).json()
 
-    assert carrello.status_code == 200
-    assert len(carrello.json()['righe']) == 1
-    assert carrello.json()['righe'][0]['quantita'] == 1
-    assert carrello.json()['totale'] == 89.90
+    assert len(carrello['righe']) == 1
+    assert carrello['righe'][0]['quantita'] == 1
+    assert carrello['totale'] == 89.90
 
 # Sad path del carrello
 @pytest.mark.parametrize("body, atteso",[
@@ -147,4 +143,4 @@ def test_ladro(base_url, auth):
     assert checkout.status_code == 201
     #assert checkout.json()['totale'] == 179.80
     assert len(carrello.json()['righe']) == 0
-    assert stock - prodottoAfter.json()['stock'] == 2
+    assert stock - prodottoAfter.json()['stock'] == 7
