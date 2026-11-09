@@ -129,9 +129,18 @@ def aggiungi_al_carrello():
 
     dati = json.loads(request.get_data())
     prodotto_id = dati["prodotto_id"]
-    quantita = dati["quantita"]
+    quantita = dati["quantita"] if "quantita" in dati else None
 
     prodotto = prodotti.get(prodotto_id)
+
+    if quantita is None:
+        return jsonify({"errore": "campo mancante"}), 400
+    if not isinstance(quantita, int):
+        return jsonify({"errore": "tipo sbagliato"}), 400
+    if quantita < 0:
+        return jsonify({"errore": "quantità negativa"}), 400
+    if quantita == 0:
+        return jsonify({"errore": "quantità zero"}), 400
     if prodotto is None:
         return jsonify({"errore": "prodotto non trovato"}), 404
     if quantita > prodotto["stock"]:
