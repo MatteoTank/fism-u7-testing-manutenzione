@@ -10,6 +10,7 @@ import os
 import secrets
 
 from flask import Flask, request, jsonify, send_from_directory
+from werkzeug.exceptions import HTTPException, BadRequest
 
 import preventivo
 import spedizioni
@@ -18,6 +19,22 @@ app = Flask(__name__, static_folder="static")
 
 AMBIENTE = os.getenv("BOTTEGA_ENV", "sviluppo")
 
+# validazione dei dati json inviati
+
+def valida_json(campi_richiesti: list[str]) -> dict:
+    try:
+        dati = json.loads(request.get_data())
+    except json.JSONDecodeError:
+        raise BadRequest("il body non è un json valido")
+    if not isinstance(dati, dict):
+        raise BadRequest("il body deve essere un oggetto json")
+    for campo in campi_richiesti:
+        if campo not in dati:
+            raise BadRequest(f"campo mancante: {campo}")
+    return dati
+    
+def numero_positivo(valore) -> bool:
+    return isinstance(valore, int) and not isinstance(valore, bool) and valore >= 1
 # --- "Database" in memoria (si azzera a ogni riavvio) -----------------------
 
 PRODOTTI_INIZIALI = [
@@ -89,7 +106,7 @@ def dettaglio_prodotto(prodotto_id):
 
 @app.post("/api/login")
 def login():
-    dati = json.loads(request.get_data())
+    dati = valida_json(["username", "password"])
     username = dati["username"]
     password = dati["password"]
 
@@ -127,11 +144,15 @@ def aggiungi_al_carrello():
     if username is None:
         return jsonify({"errore": "autenticazione richiesta"}), 401
 
-    dati = json.loads(request.get_data())
+    dati = valida_json(["prodotto_id", "quantita"])
     prodotto_id = dati["prodotto_id"]
     quantita = dati["quantita"]
 
+    if not numero_positivo(prodotto_id) or not numero_positivo(quantita):
+        return jsonify({"errore": "prodotto_id e quantita devono essere maggiori di 1"}), 400
+    
     prodotto = prodotti.get(prodotto_id)
+
     if prodotto is None:
         return jsonify({"errore": "prodotto non trovato"}), 404
     if quantita > prodotto["stock"]:
@@ -148,7 +169,7 @@ def checkout():
     if username is None:
         return jsonify({"errore": "autenticazione richiesta"}), 401
 
-    dati = json.loads(request.get_data())
+    dati = valida_json(["cap"])
     cap = dati["cap"]
     codice_sconto = dati.get("codice_sconto", "")
 
