@@ -143,4 +143,4 @@ def test_ladro(base_url, auth):
     assert checkout.status_code == 201
     #assert checkout.json()['totale'] == 179.80
     assert len(carrello.json()['righe']) == 0
-    #assert stock - prodottoAfter.json()['stock'] == 7
+    assert stock == prodottoAfter.json()['stock']

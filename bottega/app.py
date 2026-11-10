@@ -184,7 +184,11 @@ def checkout():
         righe.append({"prezzo": prodotto["prezzo"], "quantita": quantita})
         peso_totale += prodotto["peso"] * quantita
 
-    costo_spedizione = spedizioni.costo_spedizione(cap, peso_totale)
+    try:
+        costo_spedizione = spedizioni.costo_spedizione(cap, peso_totale)
+    except spedizioni.ServizioSpedizioniNonDisponibile:
+        return jsonify({"errore": "servizio spedizioni non disponibile"}), 503
+
     totale = preventivo.calcola_totale(righe, UTENTI[username]["tipo"], codice_sconto, cap, costo_spedizione)
 
     for prodotto_id, quantita in carrello.items():
