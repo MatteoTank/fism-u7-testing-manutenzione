@@ -10,7 +10,7 @@
 **Indice**
 - [Parte 1: Reti e web (Giorno 6)](#parte-1--reti-e-web-giorno-6)
 - [Parte 2: Python e test (ripasso del semestre 1, usato ogni giorno)](#parte-2--python-e-test-ripasso-del-semestre-1-usato-ogni-giorno)
-- [Parte 3: Servizi esterni e browser (Giorno 7)](#parte-3--servizi-esterni-e-browser-giorno-7)
+- [Parte 3: Servizi esterni e browser (Giorno 7-8)](#parte-3--servizi-esterni-e-browser-giorno-7-8)
 
 ---
 
@@ -181,7 +181,7 @@ def costo_spedizione(cap: str, peso: float) -> float:   # cap e peso sono PARAME
 
 ---
 
-## Parte 3 — Servizi esterni e browser (Giorno 7)
+## Parte 3 — Servizi esterni e browser (Giorno 7-8)
 
 ### Servizio esterno (dipendenza)
 - **In una frase:** un programma di **un'altra azienda** da cui il nostro dipende. Non possiamo modificarlo, possiamo solo chiamarlo. Per noi è il corriere SpediVeloce.
