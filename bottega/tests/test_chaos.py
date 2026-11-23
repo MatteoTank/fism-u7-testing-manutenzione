@@ -19,8 +19,6 @@ def test_checkout_corriere_guasto(base_url, auth):
         timeout=15
     )
 
-    
-
     # Asserts
     assert risposta.status_code == 503
     assert risposta.json() == {"errore": "servizio spedizioni non disponibile"}
